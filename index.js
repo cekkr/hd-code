@@ -3,18 +3,18 @@ const jimp = require('jimp');
 
 async function createBitImage(filePath, imageWidth, pixelSize) {
     try {
-      const fileBuffer = fs.readFileSync(filePath);
-  
+      const fileBuffer = fs.readFileSync(filePath);      
+
       // Calculate image dimensions based on file size and pixel size
       const totalPixels = fileBuffer.length * 8; // Each byte has 8 bits
       const imageHeight = Math.ceil(totalPixels / imageWidth) * pixelSize;
-      imageWidth = imageWidth * pixelSize;
+      imageWidth = imageWidth * pixelSize;        
   
-      const borderSize = pixelSize * 2;
-  
+      const borderSize = (pixelSize) * 2;
+
       // Add space for the border
-      const borderedImageWidth = imageWidth + (2 * borderSize);
-      const borderedImageHeight = imageHeight + (2  * borderSize);
+      const borderedImageWidth = imageWidth + (3 * borderSize);
+      const borderedImageHeight = imageHeight + (3  * borderSize);
   
       const image = new jimp.Jimp({ width: borderedImageWidth, height: borderedImageHeight, color: 'white' });
   
@@ -32,8 +32,8 @@ async function createBitImage(filePath, imageWidth, pixelSize) {
             console.log(`Warning: Bit index ${bitIndex} out of bounds for image height ${y} > ${borderedImageHeight}`)
   
           if (bit === 1) {
-            for (let px = 0; px < pixelSize; px++) {
-              for (let py = 0; py < pixelSize; py++) {
+            for (let px = 1; px < pixelSize-1; px++) {
+              for (let py = 1; py < pixelSize-1; py++) {
                 image.setPixelColor(0x000000FF, x + px, y + py);
               }
             }
@@ -50,8 +50,8 @@ async function createBitImage(filePath, imageWidth, pixelSize) {
             for (let px = 0; px < borderSize; px++) {
               for (let py = 0; py < borderSize; py++) {
                 if (
-                  (j < borderSize || j >= borderedImageHeight - (borderSize+1)) ||
-                  (i < borderSize || i >= borderedImageWidth - (borderSize+1))
+                  (j < borderSize || j > borderedImageHeight - (borderSize*3)) ||
+                  (i < borderSize || i > borderedImageWidth - (borderSize*3))
                 ) {
                   const x = i + px
                   const y = j + py
@@ -71,4 +71,4 @@ async function createBitImage(filePath, imageWidth, pixelSize) {
   }
 
 // Example usage
-createBitImage('pdf.7z', 200, 4); // Adjust width as needed
+createBitImage('wide.jpeg.zip', 101, 5); // Adjust width as needed
