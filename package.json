@@ -1,0 +1,14 @@
+{
+  "name": "hd-code",
+  "version": "1.0.0",
+  "description": "High density code",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jimp": "^1.3.0"
+  }
+}
